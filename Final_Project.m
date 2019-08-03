@@ -80,6 +80,34 @@ pause;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Shawn's Snake
+
+
+figure(1);
+I = imread('cointest1.png');
+IGrey = rgb2gray(I);
+imshow(IGrey)
+title('Original Image')
+
+mask = zeros(size(IGrey));
+mask(400:end-1,5:end-1) = 1; %mask(a:b,c:d) (a to b is Y-axis, c to d is X-axis)
+figure(2);
+imshow(mask)
+title('Initial Contour Location')
+
+bw = activecontour(IGrey,mask,100); %600 works perfectly for coins
+
+figure(3);
+imshow(bw)
+title('Segmented Image')
+
+pause;
+
+clc; close all; clear all;
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clc;
 close all;
