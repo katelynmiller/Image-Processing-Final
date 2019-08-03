@@ -91,11 +91,8 @@ pause;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Shawn's Snake
-
-
-
-
+%Shawn's part
+clc; close all; clear all;
 
 
 %draw shape of area we need - test
@@ -126,6 +123,13 @@ plot(x,y,'b','LineWidth',2)
 hold off
 
 
+figure(3);
+masked = Apply_Filter(IGrey, bw);
+
+imshow(uint8(masked));
+
+
+
 
 
 
@@ -145,7 +149,7 @@ hold off
 
 pause;
 
-clc; close all; clear all;
+%clc; close all; clear all;
 
 % I = imread('test1.jpg');
 % imshow(I)
@@ -166,6 +170,25 @@ clc; close all; clear all;
 % title('Segmented Image');
 % 
 % break;
+
+
+
+
+
+
+function output = Apply_Filter(img, filter)
+    u_filter = uint8(filter);
+    
+    filtered_img = zeros(size(img));
+    
+    for i = 1:size(img, 1)
+        for q = 1:size(img, 2)
+            filtered_img(i, q) = img(i, q) * u_filter(i, q);
+        end
+    end
+    
+    output = filtered_img;
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
