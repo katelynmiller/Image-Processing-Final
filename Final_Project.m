@@ -5,7 +5,7 @@ clear all;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-img = imread("Test1.jpg");
+img = imread("Test2.jpg");
 
 
 img_gray = rgb2gray(img);
