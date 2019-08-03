@@ -91,32 +91,104 @@ pause;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Shawn's Snake
-
-
-figure;
-%I = img_gray;
-IGrey = img_gray;
-imshow(IGrey)
-title('Original Image')
-
-mask = zeros(size(IGrey));
-mask(400:end-1,5:end-1) = 1; %mask(a:b,c:d) (a to b is Y-axis, c to d is X-axis)
-figure;
-imshow(mask)
-title('Initial Contour Location')
-
-bw = activecontour(IGrey,mask,600); %600 works perfectly for coins
-
-figure;
-imshow(bw)
-title('Segmented Image')
-
-pause;
-
+%Shawn's part
 clc; close all; clear all;
 
 
+%draw shape of area we need - test
+%https://www.mathworks.com/help/images/ref/drawpolygon.html
+figure(1);
+I = imread('test2.jpg');
+IGrey = rgb2gray(I);
+imshow(IGrey)
+title('Original Image')
+
+%my_vertices = [0 0; 0 500; 500 500];
+Y = size(I, 1);
+X = size(I, 2);
+my_vertices = [X/2 Y/2; 0 Y; X Y];
+
+h = drawpolygon('Position',my_vertices);
+
+
+
+%draw mask for certain area we need - test
+figure(2);
+x = [X/2 0 X];
+y = [Y/2 Y Y];
+bw = poly2mask(x,y,Y,X);
+imshow(bw)
+hold on
+plot(x,y,'b','LineWidth',2)
+hold off
+
+
+figure(3);
+masked = Apply_Filter(IGrey, bw);
+
+imshow(uint8(masked));
+
+
+
+
+
+
+
+
+% mask = zeros(size(IGrey));
+% mask(400:end-1,5:end-1) = 1; %mask(a:b,c:d) (a to b is Y-axis, c to d is X-axis)
+% figure(2);
+% imshow(mask)
+% title('Initial Contour Location')
+% 
+% bw = activecontour(IGrey,mask,100); %600 works perfectly for coins, small number the less it covers
+% 
+% figure(3);
+% imshow(bw)
+% title('Segmented Image')
+
+pause;
+
+%clc; close all; clear all;
+
+% I = imread('test1.jpg');
+% imshow(I)
+% hold on
+% title('Original Image');
+% 
+% mask = false(size(I));
+% mask(50:150,40:170) = true;
+% 
+% visboundaries(mask,'Color','b');
+% 
+% bw = activecontour(I, mask, 200, 'edge');
+% 
+% visboundaries(bw,'Color','r'); 
+% title('Initial contour (blue) and final contour (red)');
+% 
+% figure, imshow(bw)
+% title('Segmented Image');
+% 
+% break;
+
+
+
+
+
+
+function output = Apply_Filter(img, filter)
+    u_filter = uint8(filter);
+    
+    filtered_img = zeros(size(img));
+    
+    for i = 1:size(img, 1)
+        for q = 1:size(img, 2)
+            filtered_img(i, q) = img(i, q) * u_filter(i, q);
+        end
+    end
+    
+    output = filtered_img;
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
