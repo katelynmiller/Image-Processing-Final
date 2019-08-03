@@ -5,7 +5,12 @@ clear all;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-img = imread("Test2.jpg");
+img = imread("Test2.jpg");drawpolygon
+
+disp(size(img, 1));
+pause;
+disp(size(img, 2));
+pause;
 
 
 img_gray = rgb2gray(img);
@@ -34,6 +39,12 @@ title("Gaussian");
 subplot(2, 2, 4);
 imshow(can);
 title("Canny");
+
+
+test = imdilate(can, strel("square", 3));
+
+figure;
+imshow(test);
 
 
 [HT, theta, rho] = hough(can);
@@ -80,24 +91,24 @@ pause;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Shawn's Snake
+%Shawn's Snake
 
 
-figure(1);
-I = imread('cointest1.png');
-IGrey = rgb2gray(I);
+figure;
+%I = img_gray;
+IGrey = img_gray;
 imshow(IGrey)
 title('Original Image')
 
 mask = zeros(size(IGrey));
 mask(400:end-1,5:end-1) = 1; %mask(a:b,c:d) (a to b is Y-axis, c to d is X-axis)
-figure(2);
+figure;
 imshow(mask)
 title('Initial Contour Location')
 
-bw = activecontour(IGrey,mask,100); %600 works perfectly for coins
+bw = activecontour(IGrey,mask,600); %600 works perfectly for coins
 
-figure(3);
+figure;
 imshow(bw)
 title('Segmented Image')
 
