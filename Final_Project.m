@@ -5,21 +5,48 @@ clear all;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-img = imread("Test2.jpg");drawpolygon
-
-disp(size(img, 1));
-pause;
-disp(size(img, 2));
-pause;
-
-
+figure(1);
+img = imread("Street4.png");
 img_gray = rgb2gray(img);
+imshow(img_gray)
+title('Original Image')
+
+%my_vertices = [0 0; 0 500; 500 500];
+Y = size(img, 1);
+X = size(img, 2);
+my_vertices = [X/2 Y/2; 0 Y; X Y];
+
+h = drawpolygon('Position', my_vertices);
 
 
-img_gauss = imgaussfilt(img_gray, 8);
+
+%draw mask for certain area we need - test
+figure(2);
+x = [X/2 0 X];
+y = [Y/2 Y Y];
+bw = poly2mask(x, y, Y, X);
+imshow(bw)
+hold on
+plot(x, y, 'b', 'LineWidth', 2)
+hold off
 
 
-can = edge(img_gauss, "Canny");
+figure(3);
+masked = uint8(Apply_Filter(img_gray, bw));
+
+imshow(masked);
+
+
+%img = imread("Test2.jpg");
+
+
+%img_gray = rgb2gray(img);
+
+
+img_gauss = imgaussfilt(masked, 8);
+
+
+can = edge(img_gauss, "Canny", .1);
 
 
 figure;
@@ -41,7 +68,7 @@ imshow(can);
 title("Canny");
 
 
-test = imdilate(can, strel("square", 3));
+test = imclose(can, strel("square", 5));
 
 figure;
 imshow(test);
@@ -61,13 +88,21 @@ axis normal
 hold on
 colormap(gca,hot)
 
-P  = houghpeaks(HT,5,'threshold',ceil(0.3*max(HT(:))));
+P  = houghpeaks(HT, 5, "threshold", 100);%ceil(0.3 * max(HT(:))));
 x = theta(P(:,2)); 
 y = rho(P(:,1));
-plot(x,y,'s','color','white');
+plot(x, y, "s", "color", "white");
 
 
 lines = houghlines(can, theta, rho, P, "FillGap", 25, "MinLength", 10);
+
+% lines = 
+% 
+% for i = 1:length(lines)
+%     
+% end
+
+
 figure, imshow(img), hold on
 max_len = 0;
 for k = 1:length(lines)
@@ -97,36 +132,7 @@ clc; close all; clear all;
 
 %draw shape of area we need - test
 %https://www.mathworks.com/help/images/ref/drawpolygon.html
-figure(1);
-I = imread('test2.jpg');
-IGrey = rgb2gray(I);
-imshow(IGrey)
-title('Original Image')
 
-%my_vertices = [0 0; 0 500; 500 500];
-Y = size(I, 1);
-X = size(I, 2);
-my_vertices = [X/2 Y/2; 0 Y; X Y];
-
-h = drawpolygon('Position',my_vertices);
-
-
-
-%draw mask for certain area we need - test
-figure(2);
-x = [X/2 0 X];
-y = [Y/2 Y Y];
-bw = poly2mask(x,y,Y,X);
-imshow(bw)
-hold on
-plot(x,y,'b','LineWidth',2)
-hold off
-
-
-figure(3);
-masked = Apply_Filter(IGrey, bw);
-
-imshow(uint8(masked));
 
 
 
@@ -147,7 +153,7 @@ imshow(uint8(masked));
 % imshow(bw)
 % title('Segmented Image')
 
-pause;
+%pause;
 
 %clc; close all; clear all;
 
@@ -170,25 +176,6 @@ pause;
 % title('Segmented Image');
 % 
 % break;
-
-
-
-
-
-
-function output = Apply_Filter(img, filter)
-    u_filter = uint8(filter);
-    
-    filtered_img = zeros(size(img));
-    
-    for i = 1:size(img, 1)
-        for q = 1:size(img, 2)
-            filtered_img(i, q) = img(i, q) * u_filter(i, q);
-        end
-    end
-    
-    output = filtered_img;
-end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
