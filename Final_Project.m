@@ -5,39 +5,7 @@ clear all;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% figure(1);
-% img = imread("Street4.png");
-% img_gray = rgb2gray(img);
-% imshow(img_gray)
-% title('Original Image')
-% 
-% %my_vertices = [0 0; 0 500; 500 500];
-% Y = size(img, 1);
-% X = size(img, 2);
-% my_vertices = [X/2 Y/2; 0 Y; X Y];
-% 
-% h = drawpolygon('Position', my_vertices);
-% 
-% 
-% 
-% %draw mask for certain area we need - test
-% figure(2);
-% x = [X/2 0 X];
-% y = [Y/2 Y Y];
-% bw = poly2mask(x, y, Y, X);
-% imshow(bw)
-% hold on
-% plot(x, y, 'b', 'LineWidth', 2)
-% hold off
-% 
-% 
-% figure(3);
-% masked = uint8(Apply_Filter(img_gray, bw));
-% 
-% imshow(masked);
-
-
-img = imread("Test2.jpg");
+img = imread("Test1.jpg");
 
 
 img_gray = rgb2gray(img);
@@ -68,19 +36,6 @@ imshow(can);
 title("Canny");
 
 
-% test = imclose(can, strel("square", 5));
-% 
-% figure;
-% imshow(test);
-
-
-% figure(1);
-% img = imread("Street4.png");
-% img_gray = rgb2gray(img);
-% imshow(img_gray)
-% title('Original Image')
-
-%my_vertices = [0 0; 0 500; 500 500];
 Y = size(img, 1);
 X = size(img, 2);
 my_vertices = [X/2 Y/2; 0 Y; X Y];
@@ -128,13 +83,6 @@ plot(x, y, "s", "color", "white");
 
 lines = houghlines(masked, theta, rho, P, "FillGap", 25, "MinLength", 10);
 
-% lines = not yet
-% 
-% for i = 1:length(lines)
-%     
-% end
-
-
 figure, imshow(img), hold on
 max_len = 0;
 for k = 1:length(lines)
@@ -156,58 +104,6 @@ end
 
 pause;
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Shawn's part
-clc; close all; clear all;
-
-
-%draw shape of area we need - test
-%https://www.mathworks.com/help/images/ref/drawpolygon.html
-
-
-
-
-
-
-
-
-
-% mask = zeros(size(IGrey));
-% mask(400:end-1,5:end-1) = 1; %mask(a:b,c:d) (a to b is Y-axis, c to d is X-axis)
-% figure(2);
-% imshow(mask)
-% title('Initial Contour Location')
-% 
-% bw = activecontour(IGrey,mask,100); %600 works perfectly for coins, small number the less it covers
-% 
-% figure(3);
-% imshow(bw)
-% title('Segmented Image')
-
-%pause;
-
-%clc; close all; clear all;
-
-% I = imread('test1.jpg');
-% imshow(I)
-% hold on
-% title('Original Image');
-% 
-% mask = false(size(I));
-% mask(50:150,40:170) = true;
-% 
-% visboundaries(mask,'Color','b');
-% 
-% bw = activecontour(I, mask, 200, 'edge');
-% 
-% visboundaries(bw,'Color','r'); 
-% title('Initial contour (blue) and final contour (red)');
-% 
-% figure, imshow(bw)
-% title('Segmented Image');
-% 
-% break;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
