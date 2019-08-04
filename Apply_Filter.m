@@ -1,4 +1,5 @@
 function output = Apply_Filter(img, filter)
+    img = im2uint8(img);
     u_filter = uint8(filter);
     filtered_img = zeros(size(img));
     

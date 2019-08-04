@@ -5,45 +5,45 @@ clear all;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-figure(1);
-img = imread("Street4.png");
+% figure(1);
+% img = imread("Street4.png");
+% img_gray = rgb2gray(img);
+% imshow(img_gray)
+% title('Original Image')
+% 
+% %my_vertices = [0 0; 0 500; 500 500];
+% Y = size(img, 1);
+% X = size(img, 2);
+% my_vertices = [X/2 Y/2; 0 Y; X Y];
+% 
+% h = drawpolygon('Position', my_vertices);
+% 
+% 
+% 
+% %draw mask for certain area we need - test
+% figure(2);
+% x = [X/2 0 X];
+% y = [Y/2 Y Y];
+% bw = poly2mask(x, y, Y, X);
+% imshow(bw)
+% hold on
+% plot(x, y, 'b', 'LineWidth', 2)
+% hold off
+% 
+% 
+% figure(3);
+% masked = uint8(Apply_Filter(img_gray, bw));
+% 
+% imshow(masked);
+
+
+img = imread("Test2.jpg");
+
+
 img_gray = rgb2gray(img);
-imshow(img_gray)
-title('Original Image')
-
-%my_vertices = [0 0; 0 500; 500 500];
-Y = size(img, 1);
-X = size(img, 2);
-my_vertices = [X/2 Y/2; 0 Y; X Y];
-
-h = drawpolygon('Position', my_vertices);
 
 
-
-%draw mask for certain area we need - test
-figure(2);
-x = [X/2 0 X];
-y = [Y/2 Y Y];
-bw = poly2mask(x, y, Y, X);
-imshow(bw)
-hold on
-plot(x, y, 'b', 'LineWidth', 2)
-hold off
-
-
-figure(3);
-masked = uint8(Apply_Filter(img_gray, bw));
-
-imshow(masked);
-
-
-%img = imread("Test2.jpg");
-
-
-%img_gray = rgb2gray(img);
-
-
-img_gauss = imgaussfilt(masked, 8);
+img_gauss = imgaussfilt(img_gray, 8);
 
 
 can = edge(img_gauss, "Canny", .1);
@@ -68,13 +68,45 @@ imshow(can);
 title("Canny");
 
 
-test = imclose(can, strel("square", 5));
+% test = imclose(can, strel("square", 5));
+% 
+% figure;
+% imshow(test);
 
-figure;
-imshow(test);
+
+% figure(1);
+% img = imread("Street4.png");
+% img_gray = rgb2gray(img);
+% imshow(img_gray)
+% title('Original Image')
+
+%my_vertices = [0 0; 0 500; 500 500];
+Y = size(img, 1);
+X = size(img, 2);
+my_vertices = [X/2 Y/2; 0 Y; X Y];
+
+h = drawpolygon('Position', my_vertices);
 
 
-[HT, theta, rho] = hough(can);
+
+%draw mask for certain area we need - test
+figure(2);
+x = [X/2 0 X];
+y = [Y/2 Y Y];
+bw = poly2mask(x, y, Y, X);
+imshow(bw)
+hold on
+plot(x, y, 'b', 'LineWidth', 2)
+hold off
+
+
+figure(3);
+masked = uint8(Apply_Filter(can, bw));
+
+imshow(masked);
+
+
+[HT, theta, rho] = hough(masked);
 
 figure
 imshow(imadjust(rescale(HT)),[],...
@@ -94,7 +126,7 @@ y = rho(P(:,1));
 plot(x, y, "s", "color", "white");
 
 
-lines = houghlines(can, theta, rho, P, "FillGap", 25, "MinLength", 10);
+lines = houghlines(masked, theta, rho, P, "FillGap", 25, "MinLength", 10);
 
 % lines = not yet
 % 
