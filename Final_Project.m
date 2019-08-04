@@ -96,7 +96,7 @@ plot(x, y, "s", "color", "white");
 
 lines = houghlines(can, theta, rho, P, "FillGap", 25, "MinLength", 10);
 
-% lines = 
+% lines = not yet
 % 
 % for i = 1:length(lines)
 %     
